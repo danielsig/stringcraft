@@ -1,7 +1,9 @@
 using System;
+using System.Runtime.InteropServices;
 
 namespace StringCraft
 {
+	[StructLayout(LayoutKind.Sequential)]
 	public struct Vector2
 	{
 		#region properties
@@ -119,17 +121,23 @@ namespace StringCraft
 			left.Y -= right.Y;
 			return left;
 		}
-		public static int operator *(Vector2 left, Vector2 right)
+		public static int operator &(Vector2 left, Vector2 right)//dot product
 		{
 			return left.X * right.X + left.Y * right.Y;
 		}
-		public static int operator %(Vector2 left, Vector2 right)
+		public static int operator %(Vector2 left, Vector2 right)//distance
 		{
 			left -= right;
 			return left.Magnitude;
 		}
 		#region multiplication
 		#region vector * number
+		public static Vector2 operator *(Vector2 left, Vector2 right)
+		{
+			left.X = left.X * right.X;
+			left.Y = left.Y * right.Y;
+			return left;
+		}
 		public static Vector2 operator *(Vector2 left, short right)
 		{
 			left.X *= right;
@@ -196,6 +204,12 @@ namespace StringCraft
 		#endregion
 		
 		#region division
+		public static Vector2 operator /(Vector2 left, Vector2 right)
+		{
+			left.X = left.X / right.X;
+			left.Y = left.Y / right.Y;
+			return left;
+		}
 		public static Vector2 operator /(Vector2 left, short right)
 		{
 			left.X = RoundToInt(left.X / (double)right);
@@ -245,6 +259,14 @@ namespace StringCraft
 			right.X *= right.X;
 			right.Y *= right.Y;
 			return left.X + left.Y < right.X + right.Y;
+		}
+		public static bool operator ==(Vector2 left, Vector2 right)
+		{
+			return left.X == right.X && left.Y == right.Y;
+		}
+		public static bool operator !=(Vector2 left, Vector2 right)
+		{
+			return left.X != right.X || left.Y != right.Y;
 		}
 		#endregion
 		

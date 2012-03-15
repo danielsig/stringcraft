@@ -10,17 +10,20 @@ namespace StringCraft
 		{
 			get
 			{
-				if(Cameras.Count == 0) CreateMain();
+				if(Cameras.Count == 0) CreateMain(ConsoleColor.Black);
 				return Cameras.First.Value;
 			}
 		}
-		internal static Camera CreateMain()
+		internal static Camera CreateMain(ConsoleColor backgroundColor)
 		{
 			GameObject mainCam = new GameObject("MainCamera");
-			return mainCam.AddComponent<Camera>();
+			Camera cam = mainCam.AddComponent<Camera>();
+			cam.BackgroundColor = backgroundColor;
+			return cam;
 		}
 		
 		public Rectangle Screen;
+		public ConsoleColor BackgroundColor;
 		
 		public Rectangle WorldScreen
 		{
@@ -34,7 +37,7 @@ namespace StringCraft
 		public void Awake()
 		{
 			Cameras.AddLast(this);
-			Screen = new Rectangle(Anchor.TopLeft, Vector2.ZERO, Engine.WindowSize);
+			Screen = new Rectangle(Anchor.TopLeft, Vector2.ZERO, Input.ConsoleSize);
 		}
 		public void OnDestroy()
 		{

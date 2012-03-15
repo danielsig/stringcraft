@@ -20,10 +20,23 @@ namespace StringCraft
 		[FieldOffset(2)] public short Attributes;
 	}
 	
+	[StructLayout(LayoutKind.Sequential)]
+	internal struct Coord
+	{
+		public short X;
+		public short Y;
+
+		public Coord(short X, short Y)
+		{
+			this.X = X;
+			this.Y = Y;
+		}
+	};
+	
 	public static class ConsoleWriter
 	{
 		[DllImport("Kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-		static extern SafeFileHandle CreateFile(
+		private static extern SafeFileHandle CreateFile(
 				string fileName,
 				[MarshalAs(UnmanagedType.U4)] uint fileAccess,
 				[MarshalAs(UnmanagedType.U4)] uint fileShare,
@@ -33,28 +46,16 @@ namespace StringCraft
 				IntPtr template);
 
 		[DllImport("kernel32.dll", SetLastError = true)]
-		static extern bool WriteConsoleOutput(
+		private static extern bool WriteConsoleOutput(
 			SafeFileHandle hConsoleOutput, 
 			CharInfo[] lpBuffer, 
 			Coord dwBufferSize, 
 			Coord dwBufferCoord, 
 			ref SmallRect lpWriteRegion);
 
-		[StructLayout(LayoutKind.Sequential)]
-		public struct Coord
-		{
-			public short X;
-			public short Y;
-
-			public Coord(short X, short Y)
-			{
-				this.X = X;
-				this.Y = Y;
-			}
-		};
 
 		[StructLayout(LayoutKind.Sequential)]
-		public struct SmallRect
+		private struct SmallRect
 		{
 			public short Left;
 			public short Top;
@@ -62,8 +63,7 @@ namespace StringCraft
 			public short Bottom;
 		}
 
-
-		[STAThread]
+		
 		public static void Write(Rectangle rectangle, CharInfo[] buf)
 		{
 			SafeFileHandle h = CreateFile("CONOUT$", 0x40000000, 2, IntPtr.Zero, FileMode.Open, 0, IntPtr.Zero);

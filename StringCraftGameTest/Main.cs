@@ -5,9 +5,10 @@ namespace StringCraftGameTest
 {
 	class MainClass
 	{
+		[STAThread]
 		public static int Main(string[] args)
 		{
-			Engine.Init<GameCore>(20);
+			Engine.Init<GameCore>(50, -1, -1, ConsoleColor.DarkBlue);
 			return 0;
 		}
 	}

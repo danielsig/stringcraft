@@ -158,6 +158,10 @@ namespace StringCraft
 			
 			return instance as CompType;
 		}
+		public CompType GetComponent<CompType>() where CompType : Component
+		{
+			return (CompType)_components[typeof(CompType)];
+		}
 		public void RemoveComponent<CompType>() where CompType : Component
 		{
 			if(Destroyed) ThrowAccessError();

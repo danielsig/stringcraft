@@ -171,11 +171,11 @@ namespace StringCraft
 			
 		}
 		
-		public static Symbol CreateBuffer(Vector2 size)
+		public static Symbol CreateBuffer(Vector2 size, char backgroundColor = '#')
 		{
-			return CreateBuffer(size.X, size.Y);
+			return CreateBuffer(size.X, size.Y, backgroundColor);
 		}
-		public static Symbol CreateBuffer(int width, int height)
+		public static Symbol CreateBuffer(int width, int height, char backgroundColor = '#')
 		{
 			Symbol s = new Symbol();
 			if(height < 1)
@@ -191,7 +191,7 @@ namespace StringCraft
 			s.IsMutable = true;
 			s.sc_lines = new Line[height];
 			
-			Line emptyLine = new Line(width);
+			Line emptyLine = new Line(" ", " ", backgroundColor + "", width);
 			
 			for(int i = 0; i < height; i++)
 			{

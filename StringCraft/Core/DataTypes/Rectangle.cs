@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 
 namespace StringCraft
 {
@@ -18,6 +19,7 @@ namespace StringCraft
 		Right
 	}
 	//TODO gera unit test fyrir þennan struct
+	[StructLayout(LayoutKind.Sequential)]
 	public struct Rectangle
 	{
 		public static readonly Rectangle NULL = new Rectangle{sc_topLeft = Vector2.ZERO, sc_size = Vector2.ZERO, sc_mutable = false };

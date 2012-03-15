@@ -128,7 +128,7 @@ namespace StringCraft
 				Rectangle screen = cam.Screen;
 				Rectangle worldScreen = cam.WorldScreen;
 				
-				Symbol buffer = Symbol.CreateBuffer(screen.sc_size);
+				Symbol buffer = Symbol.CreateBuffer(screen.sc_size, cam.BackgroundColor.ToChar());
 				
 				foreach(Renderer renderer in sc_displayList)
 				{

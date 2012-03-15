@@ -43,6 +43,8 @@ namespace StringCraft
 			
 			?   = transparent
 			!   = transparent white
+			
+			
 			@   = transparent black
 			
 			456 = transparent red, green and blue

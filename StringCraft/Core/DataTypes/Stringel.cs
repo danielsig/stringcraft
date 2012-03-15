@@ -68,6 +68,13 @@ namespace StringCraft
 					return c1;
 				}
 			}
+			else if(c1.TextColor == '?')
+			{	
+				if(c1.BackColor == '?')
+				{
+					return c2;
+				}
+			}
 			//Finds the back color
 			if(c2.BackColor == '?')
 			{
@@ -82,7 +89,7 @@ namespace StringCraft
 			//Finds the text
 			text=c3.TextMulti(c1.Text,c2.Text);
 			
-			return c1;
+			return c2;
 		}
 		
 		// Function that takes in 2 char values and puts them together if possiable and returns the result

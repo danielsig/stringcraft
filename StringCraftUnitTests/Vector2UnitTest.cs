@@ -90,6 +90,18 @@ namespace StringCraftUnitTests
 			Assert.AreEqual(new Vector2(3, 2), new Vector2(3, 6) - new Vector2(0, 4));
 		}
 		[Test]
+		public void DotProductTest()
+		{
+			Assert.AreEqual(1, new Vector2(1, 0) & new Vector2(1, 0));
+			Assert.AreEqual(0, new Vector2(1, 0) & new Vector2(0, 1));
+			Assert.AreEqual(2, new Vector2(1, 1) & new Vector2(0, 2));
+			Assert.AreEqual(-1, new Vector2(-1, 0) & new Vector2(1, 0));
+			Assert.AreEqual(-1, new Vector2(0, -1) & new Vector2(0, 1));
+			Assert.AreEqual(-1, new Vector2(1, 0) & new Vector2(-1, 0));
+			Assert.AreEqual(-1, new Vector2(0, 1) & new Vector2(0, -1));
+			
+		}
+		[Test]
 		public void SugarTest()
 		{
 			Assert.AreEqual(new Vector2(-3, 3), new Vector2(3, 3).FlippedX);

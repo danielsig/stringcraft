@@ -23,6 +23,7 @@ namespace StringCraftGameTest
 		
 		public void Awake ()
 		{
+			
 		}
 		public void Start ()
 		{
@@ -30,6 +31,7 @@ namespace StringCraftGameTest
 			test.AddComponent<Renderer>().SetSymbolByName("myRobot");
 			test.AddComponent<TestComponent>();
 			test.Position = new Vector2(60, 25);
+			test.GetComponent<Renderer>().Anchor = Anchor.Center;
 		}
 		
 		public int Counter = 0;
