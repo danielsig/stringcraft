@@ -6,10 +6,10 @@ namespace StringCraft
 	public struct Stringel
 	{
 		public static readonly Stringel DEFAULT = new Stringel(' ', ' ', '?');
-		private static readonly char[] _lightHue =	new char[]{'.',' ','.',' ','.','.','.'};
+		private static readonly char[] _lightHue =	new char[]{'.',' ',' ',' ','C','.','.'};
 		private static readonly char[] _hue =		new char[]{'R','Y','G','C','B','M','R'};
 		private static readonly char[] _darkHue =	new char[]{'r','y','g','c','b','m','r'};
-		private static readonly char[] _blackHue =	new char[]{'#','+','#','+','#','#','#'};
+		private static readonly char[] _blackHue =	new char[]{'#','+','#','#','#','#','#'};
 		
 		public readonly char Text;
 		public readonly char TextColor;
@@ -29,9 +29,9 @@ namespace StringCraft
 			green = (green - min) * invMax;
 			blue = (blue - min) * invMax;
 			
-			if(blue == 0)	return 			(red == 1	? green	/ 6 : (2 - red)		/ 6);
-			if(red == 0)	return (1.0/3) +	(green == 1	? blue	/ 6 : (2 - green)	/ 6);
-			if(green == 0)	return (2.0/3) +	(blue == 1	? red	/ 6 : (2 - blue)	/ 6);
+			if(blue < 0.001)	return 				(red > green	? green	/ 6 : (2 - red)		/ 6);
+			if(red < 0.001)	return (1.0/3) +	(green > blue	? blue	/ 6 : (2 - green)	/ 6);
+			if(green < 0.001)return (2.0/3) +	(blue > red		? red	/ 6 : (2 - blue)	/ 6);
 			return 0.0111144444;
 			/*double invMax = 0.333333333333333 / Math.Max(Math.Max(red, green), blue);
 			if(green > blue)
@@ -41,12 +41,18 @@ namespace StringCraft
 		}
 		private static double Lightness(double red, double green, double blue)
 		{
-			double min = Math.Min(Math.Min(red, green), blue);
-			red -= min;
-			green -= min;
-			blue -= min;
-			
-			return 0.3 + ((red + green + blue) * 0.99 - 0.3) * 0.3;
+			if(red * green + green * blue + blue * red < 0.66666)
+				return (red + green + blue) * 0.63 - (red * green + green * blue + blue * red) * 0.6;
+			else
+				return (red + green + blue) * 0.33333;
+			/*
+			return Math.Sqrt
+			(
+  				red * red * 0.35 + 
+  				green * green * 0.37 + 
+  				blue * blue * 0.45
+			) * 1.05 - (2 - (red * green + green * blue + blue * red)) * 0.1;
+			*/
 		}
 		
 		public Stringel(double red, double green, double blue)
@@ -83,12 +89,12 @@ namespace StringCraft
 					textColors = _hue;
 					backColors = _lightHue;
 				}
-				else if(light > 0.85)//0.75 - 0.875
+				else if(light > 0.7)//0.75 - 0.875
 				{
-					textColors = _lightHue;
-					backColors = _hue;
+					textColors = _hue;
+					backColors = _lightHue;
 				}
-				else if(light > 0.6)//0.6 - 0.85
+				else if(light > 0.55)//0.6 - 0.85
 				{
 					textColors = _hue;
 					backColors = _hue;

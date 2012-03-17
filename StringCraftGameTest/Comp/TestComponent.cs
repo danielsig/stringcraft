@@ -28,11 +28,11 @@ namespace StringCraftGameTest
 			
 			if(Input.ButtonDown("Sple") || Input.MouseDown)
 			{
-				Gameobject.GetComponent<Renderer>().SetSymbolByName("Dot");
+				Gameobject.GetComponent<Renderer>().SetSymbolByName("Colors");
 			}
 			else
 			{
-				Gameobject.GetComponent<Renderer>().SetSymbolByName("MyRobot");
+				Gameobject.GetComponent<Renderer>().SetSymbolByName("Mario");
 			}
 		}
 		private Vector2 _velocity = Vector2.ZERO;
