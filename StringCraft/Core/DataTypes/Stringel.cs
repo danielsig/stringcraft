@@ -202,6 +202,10 @@ namespace StringCraft
 			char text;
 			Stringel c3 = new Stringel();
 			
+			if(!c3.Istransparent(c2.BackColor))
+			{
+				return c2;
+			}
 			//Base case check if c2 is transparent
 			if(c2.TextColor == '?')
 			{	
@@ -217,26 +221,28 @@ namespace StringCraft
 					return c2;
 				}
 			}
-			//Finds the back color
-			if(c2.BackColor == '?')
-			{
-				backColor=c1.BackColor;
-			}
-			else 
-			{
-			}
 			
+			backColor = c3.ColorMulti(c1.BackColor, c2.BackColor);
+			
+			if(c3.Istransparent(c2.TextColor))
+			{
+				textColor=c3.ColorMulti(c1.TextColor,c2.TextColor);
+			}
+			else
+			{
+				textColor=c2.TextColor;
+			}
 			//Finds the text Color
 			
 			//Finds the text
 			text=c3.TextMulti(c1.Text,c2.Text);
 			
-			return c2;
+			return new Stringel(text, textColor, backColor);
 		}
 		
 		// Function that takes in 2 char values and puts them together if possiable and returns the result
 		// If not it returns the firsChar
-		public char TextMulti(char firstChar, char SecondChar)
+		public char TextMulti(char firstChar, char secondChar)
 		{
 			int y=0;
 			int x=0;
@@ -265,7 +271,7 @@ namespace StringCraft
 					y=i;
 				}
 				
-				if(firstChar == textMulti[i,0])
+				if(secondChar == textMulti[i,0])
 				{
 					x=i;
 				}
@@ -279,7 +285,78 @@ namespace StringCraft
 				}
 			}
 			
-			return firstChar;
+			return secondChar;
+		}
+		
+		public char ColorMulti(char firstColor, char secondColor)
+		{
+			int y=0;
+			int x=0;
+			char[,] colorMulti=
+			{{'?','0','1','2','3','4','5','6','7','8','9','R','G','B','C','M','Y','r','g','b','c','m','y','!','@','#','+','.',' ','?'},
+			{'0','0','1','2','3','r','g','b','c','m','y','R','G','B','C','M','Y','r','g','b','c','m','y',' ','+','#','+','.',' ','0'},
+			{'1','0','1','2','3','r','g','b','c','m','y','R','G','B','C','M','Y','r','g','b','c','m','y','.','+','#','+','.',' ','1'},
+			{'2','0','1','2','3','R','G','B','C','M','Y','R','G','B','C','M','Y','r','g','b','c','m','y','.','+','#','+','.',' ','2'},
+			{'3','0','1','2','3','R','G','B','C','M','Y','R','G','B','C','M','Y','r','g','b','c','m','y','+','#','#','+','.',' ','3'},
+			{'4','r','r','R','R','R','Y','M','B','R','y','R','Y','M','B','R','y','r','y','m','b','r','y','R','r','r','r','R','R','4'},
+			{'5','g','g','G','G','Y','G','C','C','G','G','Y','G','C','C','G','G','y','g','c','c','g','g','G','g','g','g','G','G','5'},
+			{'6','b','b','B','B','M','C','B','B','b','G','M','C','B','B','b','G','m','c','b','b','b','g','B','b','b','b','B','B','6'},
+			{'7','c','c','C','C','B','C','B','C','M','G','B','Y','B','C','M','G','b','y','b','c','m','g','C','c','c','c','C','C','7'},
+			{'8','m','m','M','M','R','G','b','M','M','M','R','Y','M','B','M','M','r','y','m','b','m','m','M','m','m','m','M','M','8'},
+			{'9','y','y','Y','Y','y','G','G','G','M','Y','R','G','G','G','M','Y','r','g','g','g','m','y','Y','y','y','y','Y','Y','9'},
+			{'R','0','1','2','3','R','Y','M','B','R','R','R','G','B','C','M','Y','r','g','b','c','m','y','R','r','#','+','.',' ','R'},
+			{'G','0','1','2','3','Y','G','C','Y','Y','G','R','G','B','C','M','Y','r','g','b','c','m','y','G','g','#','+','.',' ','G'},
+			{'B','0','1','2','3','M','C','B','B','M','G','R','G','B','C','M','Y','r','g','b','c','m','y','B','b','#','+','.',' ','B'},
+			{'C','0','1','2','3','B','C','B','C','B','G','R','G','B','C','M','Y','r','g','b','c','m','y','C','c','#','+','.',' ','C'},
+			{'M','0','1','2','3','R','G','b','M','M','M','R','G','B','C','M','Y','r','g','b','c','m','y','M','m','#','+','.',' ','M'},
+			{'Y','0','1','2','3','y','G','G','G','M','Y','R','G','B','C','M','Y','r','g','b','c','m','y','Y','y','#','+','.',' ','Y'},
+			{'r','0','1','2','3','r','y','m','b','r','r','R','G','B','C','M','Y','r','g','b','c','m','y','R','r','#','+','.',' ','r'},
+			{'g','0','1','2','3','y','g','c','y','y','g','R','G','B','C','M','Y','r','g','b','c','m','y','G','g','#','+','.',' ','g'},
+			{'b','0','1','2','3','m','c','b','b','m','g','R','G','B','C','M','Y','r','g','b','c','m','y','B','b','#','+','.',' ','b'},
+			{'c','0','1','2','3','b','c','b','c','b','g','R','G','B','C','M','Y','r','g','b','c','m','y','C','c','#','+','.',' ','c'},
+			{'m','0','1','2','3','r','g','b','m','m','m','R','G','B','C','M','Y','r','g','b','c','m','y','M','m','#','+','.',' ','m'},
+			{'y','0','1','2','3','y','g','g','g','m','y','R','G','B','C','M','Y','r','g','b','c','m','y','Y','y','#','+','.',' ','y'},
+			{'!',' ','.','.','+','R','G','B','C','M','Y','R','G','B','C','M','Y','R','G','B','C','M','Y',' ','#','+','.','.',' ','!'},
+			{'@','+','+','+','#','r','g','b','c','m','y','r','g','b','c','m','y','r','g','b','c','m','y','+','#','#','+','+','+','@'},
+			{'#','0','1','2','3','r','g','b','c','m','y','R','G','B','C','M','Y','r','g','b','c','m','y','+','#','#','+','.',' ','#'},
+			{'+','0','1','2','3','r','g','b','c','m','y','R','G','B','C','M','Y','r','g','b','c','m','y','+','+','#','+','.',' ','+'},
+			{'.','0','1','2','3','R','G','B','C','M','Y','R','G','B','C','M','Y','r','g','b','c','m','y','.','+','#','+','.',' ','.'},
+			{' ','0','1','2','3','R','G','B','C','M','Y','R','G','B','C','M','Y','r','g','b','c','m','y',' ','+','#','+','.',' ',' '},
+			{'?','0','1','2','3','4','5','6','7','8','9','R','G','B','C','M','Y','r','g','b','c','m','y','!','@','#','+','.',' ','?'}};
+			
+			for(int i=1; i<29; i++)
+			{
+				if(firstColor == colorMulti[0,i])
+				{
+					y=i;
+				}
+				
+				if(secondColor == colorMulti[i,0])
+				{
+					x=i;
+				}
+			}
+			
+			if((x!=0)&&(y!=0))
+			{
+				return colorMulti[x,y];	
+			}
+			
+			return secondColor;
+		}
+		
+		public bool Istransparent(char color)
+		{
+			char[] transparent = {'4','5','6','7','8','9','!','@'};
+			foreach(var n in transparent)
+			{
+				if(n==color)
+				{
+					return true;
+				}
+			}
+			
+			return false;
 		}
 	}
 }
