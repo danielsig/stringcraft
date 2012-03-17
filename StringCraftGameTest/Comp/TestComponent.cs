@@ -13,6 +13,7 @@ namespace StringCraftGameTest
 			                   System.Windows.Input.Key.Up,
 			                   System.Windows.Input.Key.Down
 			                   );
+			Input.DefineButton("Sple", System.Windows.Input.Key.Space);
 		}
 		public void Update ()
 		{
@@ -24,6 +25,15 @@ namespace StringCraftGameTest
 			
 			//Gameobject.Position += move;
 			Gameobject.Position = Input.MousePosition;
+			
+			if(Input.ButtonDown("Sple") || Input.MouseDown)
+			{
+				Gameobject.GetComponent<Renderer>().SetSymbolByName("Dot");
+			}
+			else
+			{
+				Gameobject.GetComponent<Renderer>().SetSymbolByName("MyRobot");
+			}
 		}
 		private Vector2 _velocity = Vector2.ZERO;
 		private Random _rand = new Random();

@@ -85,6 +85,74 @@ namespace StringCraft
 			BackColor = stringel.BackColor.ToLength(length);
 			Check(Text, TextColor, BackColor);
 		}
+		public Line(int[] colorCodes12Bit)
+		: this(colorCodes12Bit, 0, colorCodes12Bit.Length)
+		{
+			/*int max = stringels.Length;
+			StringBuilder text = new StringBuilder(max);
+			StringBuilder textColor = new StringBuilder(max);
+			StringBuilder backColor = new StringBuilder(max);
+			
+			int i = 0;
+			foreach(int code in colorCodes12Bit)
+			{
+				double red = code >> 8;
+				double green = code & 0x0F0 >> 4;
+				double blue = code & 0x00F;
+				Stringel str = new Stringel(red / 16, green / 16, blue / 16);
+				text[i] = str.Text;
+				textColor[i] = str.TextColor;
+				backColor[i++] = str.BackColor;
+			}
+			Text = text.ToString();
+			TextColor = textColor.ToString();
+			BackColor = backColor.ToString();*/
+		}
+		public Line(int[] colorCodes12Bit, int index, int amount)
+		{
+			StringBuilder text = new StringBuilder(amount);
+			StringBuilder textColor = new StringBuilder(amount);
+			StringBuilder backColor = new StringBuilder(amount);
+			
+			backColor.Length = textColor.Length = text.Length = amount;
+			
+			for(int i = 0; i < amount; i++)
+			{
+				int code = colorCodes12Bit[i + index];
+				double red = (code & 0xF00) >> 8;
+				double green = (code & 0x0F0) >> 4;
+				double blue = code & 0x00F;
+				//Console.WriteLine("--------------");
+				//Console.WriteLine(red + ", " + green + ", " + blue);
+				Stringel str = new Stringel(red / 16, green / 16, blue / 16);
+				text[i] = str.Text;
+				textColor[i] = str.TextColor;
+				backColor[i] = str.BackColor;
+			}
+			Text = text.ToString();
+			TextColor = textColor.ToString();
+			BackColor = backColor.ToString();
+		}
+		public Line(Stringel[] stringels)
+		{
+			int max = stringels.Length;
+			StringBuilder text = new StringBuilder(max);
+			StringBuilder textColor = new StringBuilder(max);
+			StringBuilder backColor = new StringBuilder(max);
+			
+			backColor.Length = textColor.Length = text.Length = max;
+			
+			int i = 0;
+			foreach(Stringel str in stringels)
+			{
+				text[i] = str.Text;
+				textColor[i] = str.TextColor;
+				backColor[i++] = str.BackColor;
+			}
+			Text = text.ToString();
+			TextColor = textColor.ToString();
+			BackColor = backColor.ToString();
+		}
 		public Line(int length) : this(Stringel.DEFAULT, length){}
 		
 		public static Symbol operator+(Line left, Line right)
@@ -105,6 +173,8 @@ namespace StringCraft
 			StringBuilder text = new StringBuilder(max);
 			StringBuilder textColor = new StringBuilder(max);
 			StringBuilder backColor = new StringBuilder(max);
+			
+			backColor.Length = textColor.Length = text.Length = max;
 			
 			for(int i = 0; i < min; i++)
 			{
@@ -197,7 +267,7 @@ namespace StringCraft
 			int len = Length;
 			for(int i = 0; i < len; i++)
 			{
-				buf[index].Attributes = (short)((int)TextColor[i].ToColor() + ((int)BackColor[i].ToColor() << 4));;
+				buf[index].Attributes = (short)((int)TextColor[i].ToColor() + ((int)BackColor[i].ToColor() << 4));
 				buf[index++].Char.UnicodeChar = Text[i];
 			}
 		}

@@ -217,6 +217,16 @@ namespace StringCraft
 			}
 			return DefineSymbol(name, lines, mutable);
 		}
+		public static Symbol DefineSymbol(string name, bool mutable, int width, params int[] colorCodes12Bit)
+		{
+			int height = colorCodes12Bit.Length / width;
+			Line[] linesArr = new Line[height];
+			for(int i = 0; i < height; i++)
+			{
+				linesArr[i] = new Line(colorCodes12Bit, i * width, width);
+			}
+			return DefineSymbol(name, linesArr, mutable);
+		}
 		/**
 		 * every 3 strings in the optional params "lines" represents a line.
 		 * where the first string is the text
@@ -245,7 +255,7 @@ namespace StringCraft
 			);
 			
 		 */
-		public static Symbol DefineSymbol(string name, bool mutable = false, params string[] lines)
+		public static Symbol DefineSymbol(string name, bool mutable, params string[] lines)
 		{
 			if(lines.Length < 3)
 			{

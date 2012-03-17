@@ -260,7 +260,7 @@ namespace StringCraft
 				
 				node = next;
 			}
-			if(System.Windows.Input.Mouse.LeftButton == MouseButtonState.Pressed)
+			if(System.Windows.Input.Mouse.PrimaryDevice.LeftButton == MouseButtonState.Pressed)
 			{
 				if(Mouse > ButtonState.Release)
 					Mouse = ButtonState.Hold;
@@ -275,7 +275,7 @@ namespace StringCraft
 			else if(Mouse != ButtonState.Idle)
 				Mouse = ButtonState.Release;
 			
-			if(System.Windows.Input.Mouse.RightButton == MouseButtonState.Pressed)
+			if(System.Windows.Input.Mouse.PrimaryDevice.RightButton == MouseButtonState.Pressed)
 			{
 				if(MouseRight > ButtonState.Release)
 					MouseRight = ButtonState.Hold;
@@ -290,7 +290,7 @@ namespace StringCraft
 			else if(MouseRight != ButtonState.Idle)
 				MouseRight = ButtonState.Release;
 			
-			if(System.Windows.Input.Mouse.MiddleButton == MouseButtonState.Pressed)
+			if(System.Windows.Input.Mouse.PrimaryDevice.MiddleButton == MouseButtonState.Pressed)
 			{
 				if(MouseMiddle > ButtonState.Release)
 					MouseMiddle = ButtonState.Hold;
