@@ -21,13 +21,17 @@ namespace StringCraft
 			GameObject.WORLD.AddComponent<MainComponent>();
 			
 			Input.DefineButton("Quit", System.Windows.Input.Key.Escape);
+			//Debug.Log("");
 						
 			while(true)
 			{
 				DateTime prev = DateTime.Now;
 				
-				GameObject.WORLD.UpdateMessage();
+				GameObject.UpdateAll();
 				Renderer.RenderAll();
+				
+				//Console.SetCursorPosition(0,0);
+				//GameObject.WORLD.LogAll();
 				
 				TimeSpan interval = _span.Subtract(DateTime.Now.Subtract(prev));
 				if(interval.Ticks > 0)

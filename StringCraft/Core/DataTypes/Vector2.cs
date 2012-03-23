@@ -268,6 +268,16 @@ namespace StringCraft
 		{
 			return left.X != right.X || left.Y != right.Y;
 		}
+		public override bool Equals(Object other)
+		{
+			if(!(other is Vector2)) return false;
+			Vector2 otherVector = (Vector2)other;
+			return X == otherVector.X && Y == otherVector.Y;
+		}
+		public override int GetHashCode()
+		{
+			return X + ((Y & 0x7FFF) << 16) + (Y >> 16);
+		}
 		#endregion
 		
 		#endregion

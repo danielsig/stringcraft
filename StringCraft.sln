@@ -50,6 +50,16 @@ Global
 		$1.DotNetNamingPolicy = $5
 		$5.DirectoryNamespaceAssociation = None
 		$5.ResourceNamePolicy = FileFormatDefault
-		version = 0.3
+		$1.StandardHeader = $6
+		$6.Text = 
+		$6.IncludeInNewFiles = True
+		$1.VersionControlPolicy = $7
+		$7.inheritsSet = Mono
+		$1.ChangeLogPolicy = $8
+		$8.UpdateMode = None
+		$8.MessageStyle = $9
+		$9.LineAlign = 0
+		$8.inheritsSet = Mono
+		version = 0.4
 	EndGlobalSection
 EndGlobal

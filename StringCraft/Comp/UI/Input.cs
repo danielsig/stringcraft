@@ -125,6 +125,32 @@ namespace StringCraft
 		{
 			get
 			{
+				Vector2 pos = MouseConsolePosition;
+				foreach(Camera cam in Camera.Cameras)
+				{
+					if(pos > cam.Screen)
+					{
+						return cam.FromConsoleSpaceToWorldSpace(pos);
+					}
+				}
+				return Camera.MainCamera.FromConsoleSpaceToWorldSpace(pos);
+			}
+			set
+			{
+				Vector2 pos = MouseConsolePosition;
+				foreach(Camera cam in Camera.Cameras)
+				{
+					if(pos > cam.Screen)
+					{
+						MouseConsolePosition = cam.FromWorldSpaceToConsoleSpace(value);
+					}
+				}
+			}
+		}
+		public static Vector2 MouseConsolePosition
+		{
+			get
+			{
 				Vector2 pos = MouseScreenPositionInPixels;
 				ScreenToClient(MyConsoleWindow, ref pos);
 				return pos / FontSizeInPixels;
@@ -180,7 +206,7 @@ namespace StringCraft
 			}
 			set
 			{
-				SetWindowPos(MyConsoleWindow, 0, value.X, value.Y, 0, 0, NO_SIZE);
+				SetWindowPos(MyConsoleWindow, 0, value.X, value.Y, 0, 0, _NO_SIZE);
 			}
 		}
 		public static Vector2 WindowSizeInPixels
@@ -202,7 +228,7 @@ namespace StringCraft
 			}
 			set
 			{
-				SetWindowPos(MyConsoleWindow, 0, 0, 0, value.X, value.Y, NO_SIZE);
+				SetWindowPos(MyConsoleWindow, 0, 0, 0, value.X, value.Y, _NO_SIZE);
 			}
 		}
 		public static Vector2 ConsoleSize
@@ -260,7 +286,7 @@ namespace StringCraft
 				
 				node = next;
 			}
-			if(System.Windows.Input.Mouse.PrimaryDevice.LeftButton == MouseButtonState.Pressed)
+			if(GetAsyncKeyState(_LEFT_BUTTON) != 0)
 			{
 				if(Mouse > ButtonState.Release)
 					Mouse = ButtonState.Hold;
@@ -275,7 +301,7 @@ namespace StringCraft
 			else if(Mouse != ButtonState.Idle)
 				Mouse = ButtonState.Release;
 			
-			if(System.Windows.Input.Mouse.PrimaryDevice.RightButton == MouseButtonState.Pressed)
+			if(GetAsyncKeyState(_RIGHT_BUTTON) != 0)
 			{
 				if(MouseRight > ButtonState.Release)
 					MouseRight = ButtonState.Hold;
@@ -290,7 +316,7 @@ namespace StringCraft
 			else if(MouseRight != ButtonState.Idle)
 				MouseRight = ButtonState.Release;
 			
-			if(System.Windows.Input.Mouse.PrimaryDevice.MiddleButton == MouseButtonState.Pressed)
+			if(GetAsyncKeyState(_MIDDLE_BUTTON) != 0)
 			{
 				if(MouseMiddle > ButtonState.Release)
 					MouseMiddle = ButtonState.Hold;
@@ -307,6 +333,9 @@ namespace StringCraft
 		}
 		
 		#region SOME FREAKY HACKS
+		
+		[DllImport("user32.dll")]
+		private static extern short GetAsyncKeyState(UInt16 virtualKeyCode);
 		[DllImport("user32.dll")]
 		private static extern bool GetCursorPos(out Vector2 lpPoint);
 		[DllImport("user32.dll")]
@@ -333,8 +362,11 @@ namespace StringCraft
 		
 		
 		
+		private const UInt16 _LEFT_BUTTON = 0x01;//left mouse button
+		private const UInt16 _RIGHT_BUTTON = 0x02;//right mouse button
+		private const UInt16 _MIDDLE_BUTTON = 0x04;//middle mouse button
 		
-		private const int NO_SIZE = 0x0001;
+		private const int _NO_SIZE = 0x0001;
 		
 		private static IntPtr MyConsoleWindow = GetConsoleWindow();
 		private static IntPtr MyScreen = GetDesktopWindow();

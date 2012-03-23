@@ -1,10 +1,13 @@
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace StringCraft
 {
 	//TODO gera unit test fyrir þennan struct
+	
+	//Lines are always immutable
 	public struct Line
 	{
 		private static readonly Regex textInvalid = new Regex("[\n\r\v\t]", RegexOptions.Compiled);
@@ -108,6 +111,78 @@ namespace StringCraft
 			TextColor = textColor.ToString();
 			BackColor = backColor.ToString();*/
 		}
+		public Line Reverse
+		{
+			get
+			{
+				return new Line
+				(
+					Text.Reverse().ToString(),
+					TextColor.Reverse().ToString(),
+					BackColor.Reverse().ToString()
+				);
+			}
+		}
+		public Line Slice(int startIndex)
+		{
+			if(startIndex >= 0) return Slice(startIndex, Length - startIndex);
+			return Slice(startIndex, -startIndex);
+		}
+		public Line Slice(int startIndex, int length)
+		{
+			int lineLength = Text.Length;
+			if(length > 0)//forward
+			{
+				if(startIndex > 0)
+				{
+					if(startIndex + length < lineLength)//normal slicing
+						return SliceSafe(startIndex, length);
+					//else see loop
+				}
+				else if(startIndex >= -lineLength)
+				{
+					if(startIndex + length < 0)
+						return SliceSafe(lineLength + startIndex, length);
+					else if(startIndex + length < lineLength)
+						return SliceSafe(lineLength + startIndex, -startIndex) & SliceSafe(0, length + startIndex);
+					//else see loop
+				}
+				//loop
+				int endIndex = startIndex + length;
+				StringBuilder text = new StringBuilder(length);
+				StringBuilder textColor = new StringBuilder(length);
+				StringBuilder backColor = new StringBuilder(length);
+				
+				while(startIndex < endIndex)
+				{
+					int start = ActualIndex(startIndex);
+					int end = Math.Min(endIndex - startIndex, lineLength - start);
+					text.Append(Text, start, end);
+					textColor.Append(TextColor, start, end);
+					backColor.Append(BackColor, start, end);
+				}
+				return new Line(text.ToString(), textColor.ToString(), backColor.ToString());
+			}
+			else
+			{
+				return Reverse.Slice(lineLength - startIndex, -length);
+			}
+		}
+		private int ActualIndex(int index)
+		{
+			index %= Length;
+			if(index < 0) return Length + index;
+			return index;
+		}
+		private Line SliceSafe(int startIndex, int length)
+		{
+			return new Line
+			(
+				Text.Substring(startIndex, length),
+				TextColor.Substring(startIndex, length),
+				BackColor.Substring(startIndex, length)
+			);
+		}
 		public Line(int[] colorCodes12Bit, int index, int amount)
 		{
 			StringBuilder text = new StringBuilder(amount);
@@ -200,7 +275,7 @@ namespace StringCraft
 				left.BackColor + right.BackColor
 			);
 		}
-		public Symbol Prepend(Symbol symbol)
+		public Symbol Append(Symbol symbol)
 		{
 			if(symbol.IsMutable)
 			{
@@ -281,6 +356,28 @@ namespace StringCraft
 				}
 				return new Stringel(Text[stringelIndex], TextColor[stringelIndex], BackColor[stringelIndex]);
 			}
+		}
+		public static bool operator ==(Line left, Line right)
+		{
+			return left.Text == right.Text
+				&& right.TextColor == left.TextColor
+				&& left.BackColor == right.BackColor;
+		}
+		public static bool operator !=(Line left, Line right)
+		{
+			return left.Text != right.Text
+				|| right.TextColor != left.TextColor
+				|| left.BackColor != right.BackColor;
+		}
+		public override bool Equals(Object other)
+		{
+			if(!(other is Line)) return false;
+			Line otherLine = (Line)other;
+			return this == otherLine;
+		}
+		public override int GetHashCode()
+		{
+			return Text.GetHashCode() + TextColor.GetHashCode() + BackColor.GetHashCode();
 		}
 	}
 }

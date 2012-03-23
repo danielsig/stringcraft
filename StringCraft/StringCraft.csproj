@@ -9,7 +9,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>StringCraft</RootNamespace>
     <AssemblyName>StringCraft</AssemblyName>
-    <ReleaseVersion>0.3</ReleaseVersion>
+    <ReleaseVersion>0.4</ReleaseVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -29,6 +31,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -37,6 +40,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="WindowsFormsIntegration" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -59,6 +63,8 @@
     <Compile Include="Comp\UI\Input.cs" />
     <Compile Include="Extensions\XConsoleColor.cs" />
     <Compile Include="Extensions\XChar.cs" />
+    <Compile Include="Comp\Text\Debug.cs" />
+    <Compile Include="Core\ISingletonComponent.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

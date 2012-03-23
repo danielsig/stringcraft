@@ -1,5 +1,6 @@
 using System;
 using System.Reflection;
+using System.Collections.Generic;
 
 namespace StringCraft
 {
@@ -11,10 +12,13 @@ namespace StringCraft
 	
 	internal delegate void UpdateMethod();
 	
-	public class Component : StringCraftObject
+	public abstract class Component : StringCraftObject
 	{
+		internal static readonly Type sc_componentType = typeof(Component);
+		internal static KeyedByTypeCollection<Component> sc_singletons = new KeyedByTypeCollection<Component>();
 		internal static Type sc_updateMethodType = typeof(UpdateMethod);
 		internal bool sc_exists;
+		internal LinkedListNode<UpdateMethod> sc_updateListNodeInParent;
 		public readonly GameObject Gameobject;
 		public Component ()
 		{
@@ -22,12 +26,27 @@ namespace StringCraft
 			{
 				throw new InvalidOperationException
 				(
-					"Do not instantiate components directly, instead add them to GameObjects either" +
+					"Do not instantiate components directly, instead add them to GameObjects either " +
 					"with the GameObject.AddComponent() method or when instantiating GameObjects."
 				);
 			}
+			if(this is ISingletonComponent)
+			{
+				Type thisType = this.GetType();
+				if(sc_singletons.Contains(thisType))
+				{
+					throw new InvalidOperationException
+					(
+						"Singleton Component of type " + thisType + " that implements the" +
+						"ISingletonComponent interface can only have one instance."
+						
+					);
+				}
+				sc_singletons.Add(this);
+			}
 			Gameobject = GameObject.sc_isAddingAComponent;
 			sc_exists = true;
+			sc_updateListNodeInParent = null;
 		}
 		public static implicit operator bool(Component component)
 		{
@@ -42,6 +61,12 @@ namespace StringCraft
 				return this.GetShortTypeName();
 			}
 		}
+		
+		/*public DestructionResponse Destroy()
+		{
+			Type thisType = this.GetType();
+			return Gameobject.RemoveComponent<thisType>();
+		}*/
 		
 		internal void CallAwake()
 		{
@@ -59,7 +84,15 @@ namespace StringCraft
 		}
 		internal DestructionResponse CallDestroy()
 		{
-			return this.Call<DestructionResponse>("Destroy");
+			DestructionResponse response = this.Call<DestructionResponse>("Destroy");
+			if(response == DestructionResponse.Allow)
+			{
+				if(this is ISingletonComponent)
+				{
+					sc_singletons.Remove(this);
+				}
+			}
+			return response;
 		}
 		internal void ThrowAccessError()
 		{
@@ -72,6 +105,11 @@ namespace StringCraft
 		{
 			if(Destroyed) ThrowAccessError();
 		}
+		public DestructionResponse Destroy()
+		{
+			CheckAccess();
+			return Gameobject.RemoveComponent(this);
+		}
 		public void Log()
 		{
 			System.Console.WriteLine(this + ": ");
@@ -79,13 +117,25 @@ namespace StringCraft
 		}
 		public void LogMembers(int indent = 0)
 		{
-			string indentString = "\t".Times(indent);
-			
-			PropertyInfo[] infos = this.GetType().GetProperties();
-			foreach(PropertyInfo info in infos)
+			LogMembers("\t".Times(indent));
+		}
+		public void LogMembers(string indent)
+		{
 			{
-				if(info.CanRead)
-					System.Console.WriteLine(indentString + info.PropertyType.GetShortName() + " " + info.Name + ": " + info.GetValue(this, null));
+				PropertyInfo[] infos = this.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+				foreach(PropertyInfo info in infos)
+				{
+					if(info.CanRead && info.DeclaringType != sc_componentType)
+						System.Console.WriteLine(indent + info.PropertyType.GetShortName().ToMinLength(15, " ") + " " + info.Name + ": " + info.GetValue(this, null));
+				}
+			}
+			{
+				FieldInfo[] infos = this.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+				foreach(FieldInfo info in infos)
+				{
+					if(info.DeclaringType != sc_componentType)
+						System.Console.WriteLine(indent + info.FieldType.GetShortName().ToMinLength(15, " ") + " " + info.Name + ": " + info.GetValue(this));
+				}
 			}
 		}
 		public override string ToString()

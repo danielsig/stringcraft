@@ -78,7 +78,7 @@ namespace StringCraft
 
 				bool b = WriteConsoleOutput(h, buf,
 							new Coord() { X = (short)rectangle.sc_size.X, Y = (short)rectangle.sc_size.Y },
-							new Coord() { X = 0, Y = 0 },
+							new Coord() { X = (short)(rectangle.sc_topLeft.X), Y = (short)(rectangle.sc_topLeft.Y) },
 							ref rect);
 			}
 		}

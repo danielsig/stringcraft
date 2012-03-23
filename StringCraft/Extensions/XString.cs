@@ -34,6 +34,24 @@ namespace StringCraft
 		{
 		    return source.Times(length);
 		}
+		public static string ToLength(this string source, int length, string fillIn)
+		{
+			if(length < source.Length) return source.Substring(0, length);
+			return source + fillIn.Times((length - source.Length) / fillIn.Length);
+		}
+		public static string ToLength(this char source, int length, string fillIn)
+		{
+		    return (source + "").ToLength(length, fillIn);
+		}
+		public static string ToMinLength(this string source, int length, string fillIn)
+		{
+			if(length < source.Length) return source;
+			return source + fillIn.Times((length - source.Length) / fillIn.Length);
+		}
+		public static string ToMinLength(this char source, int length, string fillIn)
+		{
+		    return (source + "").ToMinLength(length, fillIn);
+		}
 	}
 }
 

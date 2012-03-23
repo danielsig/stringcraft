@@ -19,7 +19,7 @@ namespace StringCraft
 		CenterRight,
 		Right
 	}*/
-	public class Renderer : Component
+	public sealed class Renderer : Component
 	{
 		internal static LinkedList<Renderer> sc_displayList = new LinkedList<Renderer>();
 		public static Anchor DefaultAnchor = Anchor.TopLeft;
@@ -140,10 +140,10 @@ namespace StringCraft
 					);
 					if(bounds ^ worldScreen)
 					{
-						buffer.Overwrite(renderer.Symbol, bounds.TopLeft - worldScreen.TopLeft);
+						buffer.Overwrite(renderer.Symbol, bounds.TopLeft - worldScreen.sc_topLeft);
 					}
 				}
-				buffer.WriteToConsole(new Vector2(0, 0));
+				buffer.WriteToConsole(screen.sc_topLeft);
 			}
 		}
 	}

@@ -9,8 +9,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>StringCraftGameTest</RootNamespace>
     <AssemblyName>StringCraftGameTest</AssemblyName>
-    <ReleaseVersion>0.3</ReleaseVersion>
+    <ReleaseVersion>0.4</ReleaseVersion>
     <StartupObject>StringCraftGameTest.MainClass</StartupObject>
+    <SignAssembly>false</SignAssembly>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -44,12 +47,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <Folder Include="Comp\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\StringCraft\StringCraft.csproj">
       <Project>{FC06924A-9726-41DF-95BF-3FCCDF366C5E}</Project>
       <Name>StringCraft</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Comp\" />
   </ItemGroup>
 </Project>
