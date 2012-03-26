@@ -132,8 +132,8 @@ namespace StringCraft
 					else
 						width = lineLength;
 				}
-					
 				Size = new Vector2(width, Height + 1);
+                sc_lines[Height - 1] = line;
 				return this;
 			}
 			else throw new InvalidOperationException("Could not add Line:\n" + line + "\nto an immutable Symbol:\n" + this);

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace StringCraft
 {
@@ -126,7 +127,6 @@ namespace StringCraft
 				backColors = _blackHue;
 			}
 			
-			
 			if(ratio <= 0.125)
 			{
 				Text = light > 0.5 ? '\u00B0' : '\u00B1';
@@ -157,6 +157,8 @@ namespace StringCraft
 				TextColor = textColors[hueCeil];
 				BackColor = backColors[hueFloor];
 			}
+			
+			if(TextColor == BackColor) Text = ' ';
 		}
 		
 		public Stringel(char text, char textColor, char backColor)
@@ -200,163 +202,131 @@ namespace StringCraft
 			char textColor;
 			char backColor;
 			char text;
-			Stringel c3 = new Stringel();
 			
-			if(!c3.Istransparent(c2.BackColor))
-			{
+			if(!IsTransparent(c2.BackColor))//is back color of c2 opaque
 				return c2;
-			}
+			
 			//Base case check if c2 is transparent
-			if(c2.TextColor == '?')
-			{	
-				if(c2.BackColor == '?')
-				{
-					return c1;
-				}
-			}
-			else if(c1.TextColor == '?')
-			{	
-				if(c1.BackColor == '?')
-				{
-					return c2;
-				}
-			}
+			if((c2.TextColor == '?' || c2.Text == ' ') && c2.BackColor == '?')
+				return c1;
+			//Base case check if c1 is transparent
+			if((c1.TextColor == '?' || c1.Text == ' ') && c1.BackColor == '?')
+				return c2;
 			
-			backColor = c3.ColorMulti(c1.BackColor, c2.BackColor);
+			backColor = MultiplyColor(c1.BackColor, c2.BackColor);
 			
-			if(c3.Istransparent(c2.TextColor))
-			{
-				textColor=c3.ColorMulti(c1.TextColor,c2.TextColor);
-			}
+			if(IsTransparent(c2.TextColor) && c1.Text != ' ')
+				textColor = MultiplyColor(MultiplyColor(c1.TextColor, c2.BackColor), c2.TextColor);
 			else
-			{
-				textColor=c2.TextColor;
-			}
+				textColor = MultiplyColor(c1.BackColor, c2.TextColor);
 			//Finds the text Color
 			
 			//Finds the text
-			text=c3.TextMulti(c1.Text,c2.Text);
+			text = MultiplyText(c1.Text,c2.Text);
 			
 			return new Stringel(text, textColor, backColor);
 		}
 		
 		// Function that takes in 2 char values and puts them together if possiable and returns the result
 		// If not it returns the firsChar
-		public char TextMulti(char firstChar, char secondChar)
+		public static char MultiplyText(char firstChar, char secondChar)
 		{
 			int y=0;
 			int x=0;
-			char[,] textMulti=
-			{{'?','/','\\','|','_','-','P','A','E','F','(',')','V','D','c','.'},
-			{'/','?','x','?','?','?','?','?','?','?','?','?','?','?','?','?'},
-			{'\\','x','?','?','?','?','R','?','?','?','?','?','?','?','?','?'},
-			{'|','?','?','?','L','+','?','?','?','?','?','D','?','?','d','i'},
-			{'_','?','?','L','?','?','?','?','?','E','?','?','?','?','?','?'},
-			{'-','?','?','+','?','?','?','?','?','?','?','?','?','Ð','?','?'},
-			{'P','?','R','?','?','?','?','?','?','?','?','?','?','?','?','?'},
-			{'A','?','?','?','?','?','?','?','Æ','?','?','?','?','?','?','?'},
-			{'E','?','?','?','?','?','?','Æ','?','?','?','?','?','?','?','?'},
-			{'F','?','?','?','E','?','?','?','?','?','?','?','?','?','?','?'},
-			{'(','?','?','?','?','?','?','?','?','?','?','O','?','?','?','?'},
-			{')','?','?','D','?','?','?','?','?','?','O','?','?','?','?','?'},
-			{'V','?','?','?','?','?','?','?','?','?','?','?','W','?','?','?'},
-			{'D','?','?','?','?','Ð','?','?','?','?','?','?','?','?','?','?'},
-			{'c','?','?','d','?','?','?','?','?','?','?','?','?','?','?','?'},
-			{'.','?','?','i','?','?','?','?','?','?','?','?','?','?','?',':'}};
 			
-			for(int i=1; i<16; i++)
+			if(firstChar == secondChar || secondChar == ' ') return firstChar;
+			if(firstChar == ' ') return secondChar;
+			
+			if(firstChar == '\u00B0' || firstChar == '\u00B1') return firstChar;
+			if(secondChar == '\u00B0' || secondChar == '\u00B1') return secondChar;
+			
+			string indexMap = "/\\|_-PAEF()VDc.,'";
+			
+			char[][] textMap =
 			{
-				if(firstChar == textMulti[0,i])
-				{
-					y=i;
-				}
-				
-				if(secondChar == textMulti[i,0])
-				{
-					x=i;
-				}
-			}
+			//			 	 \   |   _   -   P   A   E   F   (   )   V   D   c   .   ,   '
+			/*/*/new char[]{'X','/','<','f','P','A','Æ','F','f','V','W','8','c','L','/','7'},
+			/*\*/new char[]{   '\\','q','+','R','A','E','E','6',')','W','&','c','>','\\','('},
+			/*|*/new char[]{		'L','+','A','#','E','F','K','I','W','D','d','!','!','i'},
+			/*_*/new char[]{			'=','E','B','E','E','6','J','U','D','c','_','_','i'},
+			/*-*/new char[]{				'P','A','E','F','{','}','H','Ð','c','c','_','L'},
+			/*P*/new char[]{					'A','R','P','P','P','8','B','B','R','P','R'},
+			/*A*/new char[]{						'Æ','Æ','A','B','X','&','&','A','A','A'},
+			/*E*/new char[]{							'E','A','B','P','B','6','E','E','6'},
+			/*F*/new char[]{								'f','B','P','B','E','E','E','P'},
+			/*(*/new char[]{									'0','V','0','C','(','(','('},
+			/*)*/new char[]{										'V','D','d',')',')','7'},
+			/*V*/new char[]{											'D','6','V','V','W'},
+			/*D*/new char[]{												'E','D','D','D'},
+			/*c*/new char[]{													'c','c','c'},
+			/*.*/new char[]{														',',':'},
+			/*,*/new char[]{															';'}
+			};
 			
-			if((x!=0)&&(y!=0))
+			x = indexMap.IndexOf(firstChar);
+			y = indexMap.IndexOf(secondChar);
+			
+			if(x < 0 || y < 0) return secondChar;
+			
+			if(y > x)
 			{
-				if(textMulti[x,y]!='?')
-				{
-					return textMulti[x,y];
-				}
+				//SWAP		 50		3
+				x = y - x;//-47		3
+				y = y - x;//-47		50
+				x = y + x;//  3		50
 			}
-			
-			return secondChar;
+			x -= (y + 1);
+			return textMap[y][x];
 		}
 		
-		public char ColorMulti(char firstColor, char secondColor)
+		public static char MultiplyColor(char firstColor, char secondColor)
 		{
 			int y=0;
 			int x=0;
-			char[,] colorMulti=
-			{{'?','0','1','2','3','4','5','6','7','8','9','R','G','B','C','M','Y','r','g','b','c','m','y','!','@','#','+','.',' ','?'},
-			{'0','0','1','2','3','r','g','b','c','m','y','R','G','B','C','M','Y','r','g','b','c','m','y',' ','+','#','+','.',' ','0'},
-			{'1','0','1','2','3','r','g','b','c','m','y','R','G','B','C','M','Y','r','g','b','c','m','y','.','+','#','+','.',' ','1'},
-			{'2','0','1','2','3','R','G','B','C','M','Y','R','G','B','C','M','Y','r','g','b','c','m','y','.','+','#','+','.',' ','2'},
-			{'3','0','1','2','3','R','G','B','C','M','Y','R','G','B','C','M','Y','r','g','b','c','m','y','+','#','#','+','.',' ','3'},
-			{'4','r','r','R','R','R','Y','M','B','R','y','R','Y','M','B','R','y','r','y','m','b','r','y','R','r','r','r','R','R','4'},
-			{'5','g','g','G','G','Y','G','C','C','G','G','Y','G','C','C','G','G','y','g','c','c','g','g','G','g','g','g','G','G','5'},
-			{'6','b','b','B','B','M','C','B','B','b','G','M','C','B','B','b','G','m','c','b','b','b','g','B','b','b','b','B','B','6'},
-			{'7','c','c','C','C','B','C','B','C','M','G','B','Y','B','C','M','G','b','y','b','c','m','g','C','c','c','c','C','C','7'},
-			{'8','m','m','M','M','R','G','b','M','M','M','R','Y','M','B','M','M','r','y','m','b','m','m','M','m','m','m','M','M','8'},
-			{'9','y','y','Y','Y','y','G','G','G','M','Y','R','G','G','G','M','Y','r','g','g','g','m','y','Y','y','y','y','Y','Y','9'},
-			{'R','0','1','2','3','R','Y','M','B','R','R','R','G','B','C','M','Y','r','g','b','c','m','y','R','r','#','+','.',' ','R'},
-			{'G','0','1','2','3','Y','G','C','Y','Y','G','R','G','B','C','M','Y','r','g','b','c','m','y','G','g','#','+','.',' ','G'},
-			{'B','0','1','2','3','M','C','B','B','M','G','R','G','B','C','M','Y','r','g','b','c','m','y','B','b','#','+','.',' ','B'},
-			{'C','0','1','2','3','B','C','B','C','B','G','R','G','B','C','M','Y','r','g','b','c','m','y','C','c','#','+','.',' ','C'},
-			{'M','0','1','2','3','R','G','b','M','M','M','R','G','B','C','M','Y','r','g','b','c','m','y','M','m','#','+','.',' ','M'},
-			{'Y','0','1','2','3','y','G','G','G','M','Y','R','G','B','C','M','Y','r','g','b','c','m','y','Y','y','#','+','.',' ','Y'},
-			{'r','0','1','2','3','r','y','m','b','r','r','R','G','B','C','M','Y','r','g','b','c','m','y','R','r','#','+','.',' ','r'},
-			{'g','0','1','2','3','y','g','c','y','y','g','R','G','B','C','M','Y','r','g','b','c','m','y','G','g','#','+','.',' ','g'},
-			{'b','0','1','2','3','m','c','b','b','m','g','R','G','B','C','M','Y','r','g','b','c','m','y','B','b','#','+','.',' ','b'},
-			{'c','0','1','2','3','b','c','b','c','b','g','R','G','B','C','M','Y','r','g','b','c','m','y','C','c','#','+','.',' ','c'},
-			{'m','0','1','2','3','r','g','b','m','m','m','R','G','B','C','M','Y','r','g','b','c','m','y','M','m','#','+','.',' ','m'},
-			{'y','0','1','2','3','y','g','g','g','m','y','R','G','B','C','M','Y','r','g','b','c','m','y','Y','y','#','+','.',' ','y'},
-			{'!',' ','.','.','+','R','G','B','C','M','Y','R','G','B','C','M','Y','R','G','B','C','M','Y',' ','#','+','.','.',' ','!'},
-			{'@','+','+','+','#','r','g','b','c','m','y','r','g','b','c','m','y','r','g','b','c','m','y','+','#','#','+','+','+','@'},
-			{'#','0','1','2','3','r','g','b','c','m','y','R','G','B','C','M','Y','r','g','b','c','m','y','+','#','#','+','.',' ','#'},
-			{'+','0','1','2','3','r','g','b','c','m','y','R','G','B','C','M','Y','r','g','b','c','m','y','+','+','#','+','.',' ','+'},
-			{'.','0','1','2','3','R','G','B','C','M','Y','R','G','B','C','M','Y','r','g','b','c','m','y','.','+','#','+','.',' ','.'},
-			{' ','0','1','2','3','R','G','B','C','M','Y','R','G','B','C','M','Y','r','g','b','c','m','y',' ','+','#','+','.',' ',' '},
-			{'?','0','1','2','3','4','5','6','7','8','9','R','G','B','C','M','Y','r','g','b','c','m','y','!','@','#','+','.',' ','?'}};
+			string indexMap1A = "0123456789RGBCMYrgbcmy@!?";
+			string indexMap1B = "#+. ";
 			
-			for(int i=1; i<29; i++)
+			string indexMap2A = "#+. RGBCMYrgbcmy";
+			string indexMap2B = "0123456789";
+			string indexMap2C = "@ !";
+			
+			char[,] colorMap = new char[,]
 			{
-				if(firstColor == colorMulti[0,i])
-				{
-					y=i;
-				}
-				
-				if(secondColor == colorMulti[i,0])
-				{
-					x=i;
-				}
-			}
+			//     0   1   2   3   4   5   6   7   8   9   R   G   B   C   M   Y   r   g   b   c   m   y   @   !   ?
+			/*#*/{'0','1','2','3','r','g','b','c','m','y','R','G','B','C','M','Y','r','g','b','c','m','y','#','+','#'},
+			/*+*/{'0','1','2','3','R','G','B','C','M','Y','R','G','B','C','M','Y','r','g','b','c','m','y','#','.','+'},
+			/*.*/{'0','1','2','3','R','G','C','C','M','Y','R','G','B','C','M','Y','r','g','b','c','m','y','+',' ','.'},
+			/* */{'0','1','2','3','R','C','C',' ','R',' ','R','G','B','C','M','Y','r','g','b','c','m','y','.',' ',' '},
+			/*R*/{'0','1','2','3','R','y','M','.','M','y','R','G','B','C','M','Y','r','g','b','c','m','y','r','y','R'},
+			/*G*/{'0','1','2','3','Y','G','C','C','.','y','R','G','B','C','M','Y','r','g','b','c','m','y','g','C','G'},
+			/*B*/{'0','1','2','3','M','C','B','c','M','G','R','G','B','C','M','Y','r','g','b','c','m','y','b','C','B'},
+			/*C*/{'0','1','2','3','B','C','c','C','B',' ','R','G','B','C','M','Y','r','g','b','c','m','y','c',' ','C'},
+			/*M*/{'0','1','2','3','R','.','b','+','M','R','R','G','B','C','M','Y','r','g','b','c','m','y','m','R','M'},
+			/*Y*/{'0','1','2','3','y','G','g','G','R','Y','R','G','B','C','M','Y','r','g','b','c','m','y','y',' ','Y'},
+			/*r*/{'0','1','2','3','R','y','m','b','m','R','R','G','B','C','M','Y','r','g','b','c','m','y','r','R','r'},
+			/*g*/{'0','1','2','3','y','G','c','c','y','G','R','G','B','C','M','Y','r','g','b','c','m','y','g','G','g'},
+			/*b*/{'0','1','2','3','m','c','B','c','m','g','R','G','B','C','M','Y','r','g','b','c','m','y','#','B','b'},
+			/*c*/{'0','1','2','3','b','g','b','C','b','+','R','G','B','C','M','Y','r','g','b','c','m','y','c','C','c'},
+			/*m*/{'0','1','2','3','r','+','b','+','M','r','R','G','B','C','M','Y','r','g','b','c','m','y','m','M','m'},
+			/*y*/{'0','1','2','3','y','g','g','g','r','Y','R','G','B','C','M','Y','r','g','b','c','m','y','y','Y','y'}
+			};
 			
-			if((x!=0)&&(y!=0))
-			{
-				return colorMulti[x,y];	
-			}
+			y = indexMap1A.IndexOf(secondColor);
+			if(y < 0) y = indexMap1B.IndexOf(secondColor);
+			if(y < 0) y = 0;
 			
-			return secondColor;
+			x = indexMap2A.IndexOf(firstColor);
+			if(x < 0) x = indexMap2B.IndexOf(firstColor);
+			if(x < 0) x = indexMap2C.IndexOf(firstColor);
+			if(x < 0) x = 0;
+			
+			return colorMap[x,y];
 		}
 		
-		public bool Istransparent(char color)
+		public static bool IsTransparent(char color)
 		{
-			char[] transparent = {'4','5','6','7','8','9','!','@'};
-			foreach(var n in transparent)
-			{
-				if(n==color)
-				{
-					return true;
-				}
-			}
-			
-			return false;
+			string transparent = "456789!@?";
+			return transparent.IndexOf(color) != -1;
 		}
 	}
 }

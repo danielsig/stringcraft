@@ -21,8 +21,10 @@ namespace StringCraft
 			GameObject.WORLD.AddComponent<MainComponent>();
 			
 			Input.DefineButton("Quit", System.Windows.Input.Key.Escape);
+			Input.DefineButton("Continue", System.Windows.Input.Key.Return);
+			Input.DefineButton("Step", System.Windows.Input.Key.Tab);
 			//Debug.Log("");
-						
+			bool stepping = false;
 			while(true)
 			{
 				DateTime prev = DateTime.Now;
@@ -38,7 +40,22 @@ namespace StringCraft
 					System.Threading.Thread.Sleep(interval);
 				
 				Input.Update();
-				if(Input.ButtonDown("Quit")) return;
+				if(Input.ButtonPressed("Quit")) return;
+				
+				if(stepping)
+				{
+					stepping = false;
+					while(true)
+					{
+						Input.Update();
+						if(Input.ButtonPressed("Quit")) return;
+						if(Input.ButtonPressed("Step") || Input.ButtonPressed("Continue")) break;
+					}
+				}
+				if(Input.ButtonPressed("Step"))
+				{
+					stepping = true;
+				}
 				
 				while(Console.KeyAvailable) Console.ReadKey(false);
 				

@@ -7,7 +7,9 @@ namespace StringCraft
 		private static Debug _instance;
 		static Debug()
 		{
+#if DEBUG
 			new GameObject("Debug").AddComponent<Debug>();
+#endif
 		}
 		public static int Height
 		{
@@ -21,23 +23,27 @@ namespace StringCraft
 		
 		public static void Log(params object[] args)
 		{
+#if DEBUG
 			foreach(object arg in args)
 				_instance.WriteLine(arg);
-		}
+#endif
+        }
 		
 		private int _lineLength = 1;
 		private Symbol _buffer = Symbol.CreateBuffer(Input.ConsoleSize.X, 20,'#');
 		
 		public void WriteLine(object obj)
 		{
+#if DEBUG
 			string toString = obj.ToString();
 			for(int i = 0; i < toString.Length; i+= _lineLength)
 			{
 				int len = Math.Min (_lineLength, toString.Length - i);
 				_buffer.Remove(0);
 				_buffer.Append( new Line(toString.Substring(i, len), '.'.ToLength(len), "#".ToLength(len)));
-			}
-		}
+            }
+#endif
+        }
 		private void Awake()
 		{
 			_instance = this;

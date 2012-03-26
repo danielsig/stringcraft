@@ -64,21 +64,88 @@ namespace StringCraftGameTest
 				 0x000, 0x440, 0x440, 0x440, 0x000, 0x000, 0x000, 0x000, 0x440, 0x440, 0x440, 0x000,
 				 0x440, 0x440, 0x440, 0x440, 0x000, 0x000, 0x000, 0x000, 0x440, 0x440, 0x440, 0x440
 			);
+			Symbol.DefineSymbol
+		 	( "Ball", false,
+				 "         ", "         ", "?????????",
+				 "         ", "         ", "??!!!!!??",
+				 "         ","         ", "?!!!!!!!?",
+				 "         ", "         ", "!!!!!!!!!",
+				 "         ", "         ", "!!!!!!!!!",
+				 "         ", "         ", "!!!!!!!!!",
+				 "         ", "         ", "?!!!!!!!?",
+				 "         ", "         ", "??!!!!!??",
+				 "         ", "         ", "?????????"
+			);
+			Symbol.DefineSymbol
+		 	( "RedBall", false,
+				 "         ", "?????????", "?????????",
+				 "         ", "??!!!!!??", "??44444??",
+				 "         ","?!!!!!!!?", "?4444444?",
+				 "         ", "!!!!!!!!!", "444444444",
+				 "         ", "!!!!!!!!!", "444444444",
+				 "         ", "!!!!!!!!!", "444444444",
+				 "         ", "?!!!!!!!?", "?4444444?",
+				 "         ", "??!!!!!??", "??44444??",
+				 "         ", "?????????", "?????????"
+			);
+			Symbol.DefineSymbol
+		 	( "GreenBall", false,
+				 "         ", "?????????", "?????????",
+				 "         ", "??!!!!!??", "??55555??",
+				 "         ","?!!!!!!!?", "?5555555?",
+				 "         ", "!!!!!!!!!", "555555555",
+				 "         ", "!!!!!!!!!", "555555555",
+				 "         ", "!!!!!!!!!", "555555555",
+				 "         ", "?!!!!!!!?", "?5555555?",
+				 "         ", "??!!!!!??", "??55555??",
+				 "         ", "?????????", "?????????"
+			);
+			Symbol.DefineSymbol
+		 	( "BlueBall", false,
+				 "         ", "?????????", "?????????",
+				 "         ", "??!!!!!??", "??66666??",
+				 "         ","?!!!!!!!?", "?6666666?",
+				 "         ", "!!!!!!!!!", "666666666",
+				 "         ", "!!!!!!!!!", "666666666",
+				 "         ", "!!!!!!!!!", "666666666",
+				 "         ", "?!!!!!!!?", "?6666666?",
+				 "         ", "??!!!!!??", "??66666??",
+				 "         ", "?????????", "?????????"
+			);
 		}
 		
 		private void Awake ()
 		{
-			
+			Rigidbody.WorldArea = Camera.MainCamera.WorldScreen;
+			Rigidbody.Gravity.Y = 3;
 		}
 		private void Start ()
 		{
 			GameObject test = new GameObject("Test");
-			test.AddComponent<Renderer>().SetSymbolByName("Mario");
-			test.AddComponent<TestComponent>();
+			test.AddComponent<MarioController>();
 			test.Position = new Vector2(60, 25);
-			test.GetComponent<Renderer>().Anchor = Anchor.BottomRight;
 			
-			//GameObject.WORLD["Debug"].GetComponent<Renderer>().SetSymbolByName("Mario");
+			string ballName = "Ball";
+			
+			for(int i = 0; i < 80; i++)
+			{
+				GameObject ball = new GameObject("Ball" + i);
+				Renderer renderer = ball.AddComponent<Renderer>();
+				Rigidbody body = ball.AddComponent<Rigidbody>();
+				Bouncer bouncer = ball.AddComponent<Bouncer>();
+				
+				renderer.SetSymbolByName(ballName);
+				renderer.Anchor = Anchor.Center;
+				
+				body.LocalCollider = new Rectangle(Anchor.Center, 0, 0, 9, 9);
+				ball.Position = Camera.MainCamera.WorldScreen.GetRandomVectorInsideRect();
+				
+				bouncer.Amount = 0.2;
+				
+				if(i % 40 == 10) ballName = "RedBall";
+				if(i % 40 == 20) ballName = "GreenBall";
+				if(i % 40 == 30) ballName = "BlueBall";
+			}
 		}
 		
 		public int Counter = 0;

@@ -6,6 +6,42 @@ namespace StringCraft
 	[StructLayout(LayoutKind.Sequential)]
 	public struct Vector2
 	{
+		private static Random _rand = new Random((int)(DateTime.Now.Ticks % 1000));
+		
+		public static Vector2 GetRandom()
+		{
+			return new Vector2(_rand.Next(int.MinValue, int.MaxValue), _rand.Next(int.MinValue, int.MaxValue));
+		}
+		public static Vector2 GetRandom(int maxMagnitude)
+		{
+			return GetRandom((double)maxMagnitude);
+		}
+		public static Vector2 GetRandom(double maxMagnitude)
+		{
+			double radians = (_rand.NextDouble() - 0.5) * Math.PI * 2;
+			double dist = Math.Sqrt(_rand.NextDouble()) * maxMagnitude;
+			double x = Math.Cos(radians) * dist + 0.5;
+			double y = Math.Sin(radians) * dist + 0.5;
+			
+			return new Vector2((int)x, (int)y);
+		}
+		public static Vector2 GetRandom(int maxX, int maxY)
+		{
+			return new Vector2(_rand.Next(maxX), _rand.Next(maxY));
+		}
+		public static Vector2 GetRandom(Vector2 max)
+		{
+			return new Vector2(_rand.Next(max.X), _rand.Next(max.Y));
+		}
+		public static Vector2 GetRandom(int minX, int minY, int maxX, int maxY)
+		{
+			return new Vector2(_rand.Next(minX, maxX), _rand.Next(minY, maxY));
+		}
+		public static Vector2 GetRandom(Vector2 min, Vector2 max)
+		{
+			return new Vector2(_rand.Next(min.X, max.X), _rand.Next(min.Y, max.Y));
+		}
+		
 		#region properties
 		public int X;
 		public int Y;
@@ -306,6 +342,61 @@ namespace StringCraft
 		public override string ToString()
 		{
 			return "( " + X + ", " + Y + " )";
+		}
+		public Vector2 GetRandomOffset(int maxOffset)
+		{
+			return GetRandomOffset((double)maxOffset);
+		}
+		public Vector2 GetRandomOffset(double maxOffset)
+		{
+			return this + GetRandom(maxOffset);
+		}
+		public Vector2 GetRandomOffset(int maxOffsetX, int maxOffsetY)
+		{
+			return this + GetRandom(-maxOffsetX, -maxOffsetY, maxOffsetX, maxOffsetY);
+		}
+		public Vector2 GetRandomOffset(Vector2 maxOffset)
+		{
+			return this + GetRandom(-maxOffset.X, -maxOffset.Y, maxOffset.X, maxOffset.Y);
+		}
+		public Vector2 GetRandomBetween(Vector2 other)
+		{
+			return Lerp (other, _rand.NextDouble());
+		}
+		public Vector2 Lerp(int toX, int toY, double amount)
+		{
+			return new Vector2(X + (int)((toX - X) * amount + 0.5), Y + (int)((toY - Y) * amount + 0.5));
+		}
+		public Vector2 Lerp(Vector2 to, double amount)
+		{
+			return new Vector2(X + (int)((to.X - X) * amount + 0.5), Y + (int)((to.Y - Y) * amount + 0.5));
+		}
+		public Vector2 Lerp(int toX, int toY, int percent)
+		{
+			return Lerp (toX, toY, percent / 100.0);
+		}
+		public Vector2 Lerp(Vector2 to, int percent)
+		{
+			return Lerp (to, percent / 100.0);
+		}
+		
+		public void MoveTowards(int toX, int toY, double amount)
+		{
+			X += (int)((toX - X) * amount + 0.5);
+			Y += (int)((toY - Y) * amount + 0.5);
+		}
+		public void MoveTowards(Vector2 to, double amount)
+		{
+			X += (int)((to.X - X) * amount + 0.5);
+			Y += (int)((to.Y - Y) * amount + 0.5);
+		}
+		public void MoveTowards(int toX, int toY, int percent)
+		{
+			MoveTowards (toX, toY, percent / 100.0);
+		}
+		public void MoveTowards(Vector2 to, int percent)
+		{
+			MoveTowards (to, percent / 100.0);
 		}
 		public void Rotate()
 		{

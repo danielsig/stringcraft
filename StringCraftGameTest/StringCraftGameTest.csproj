@@ -9,10 +9,9 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>StringCraftGameTest</RootNamespace>
     <AssemblyName>StringCraftGameTest</AssemblyName>
-    <ReleaseVersion>0.4</ReleaseVersion>
+    <ReleaseVersion>0.7</ReleaseVersion>
     <StartupObject>StringCraftGameTest.MainClass</StartupObject>
     <SignAssembly>false</SignAssembly>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,11 +27,12 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Externalconsole>true</Externalconsole>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -43,12 +43,11 @@
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Comp\GameCore.cs" />
-    <Compile Include="Comp\TestComponent.cs" />
+    <Compile Include="Comp\MarioController.cs" />
+    <Compile Include="Comp\Bouncer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Comp\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\StringCraft\StringCraft.csproj">
       <Project>{FC06924A-9726-41DF-95BF-3FCCDF366C5E}</Project>

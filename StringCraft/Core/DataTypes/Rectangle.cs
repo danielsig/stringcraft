@@ -24,6 +24,8 @@ namespace StringCraft
 	{
 		public static readonly Rectangle NULL = new Rectangle{sc_topLeft = Vector2.ZERO, sc_size = Vector2.ZERO, sc_mutable = false };
 		
+		private static Random _rand = new Random((int)(DateTime.Now.Ticks % 1000));
+		
 		internal Vector2 sc_topLeft;
 		internal Vector2 sc_size;
 		internal bool sc_mutable;
@@ -90,6 +92,37 @@ namespace StringCraft
 			{
 				return sc_size.Area;
 			}
+		}
+		public Vector2 GetRandomVectorInsideRect()
+		{
+			return sc_topLeft + new Vector2(_rand.Next(sc_size.X), _rand.Next(sc_size.Y));
+		}
+		public Vector2 GetRandomVectorOutsideRect()
+		{
+			int x = _rand.Next(int.MinValue, int.MaxValue);
+			if(x < sc_topLeft.X || x > sc_topLeft.X + sc_size.X)
+			{
+				return new Vector2(x, _rand.Next(int.MinValue, int.MaxValue));
+			}
+			int y = _rand.Next(int.MinValue + sc_size.Y, int.MaxValue);
+			if(y < sc_topLeft.Y) y -= sc_size.Y;
+			
+			return new Vector2(x, y);
+		}
+		public Vector2 GetRandomVectorOnRect()
+		{
+			int val = _rand.Next(sc_size.X * 2 + sc_size.Y * 2);
+			
+			if(val < sc_size.X) return TopLeft + Vector2.RIGHT * val;
+			
+			val -= sc_size.X;
+			if(val < sc_size.Y) return TopRight + Vector2.DOWN * val;
+			
+			val -= sc_size.Y;
+			if(val < sc_size.X) return BottomRight + Vector2.LEFT * val;
+			
+			val -= sc_size.X;
+								return BottomLeft + Vector2.UP * val;
 		}
 		public Vector2 TopLeft
 		{
@@ -278,17 +311,17 @@ namespace StringCraft
 		}
 		public static bool operator >(Rectangle a, Vector2 b)
 		{
-			return false;
+			return !(a < b);
 		}
 		public static bool operator <(Vector2 b, Rectangle a)
 		{
-			return false;
+			return !(b > a);
 		}
 		public static bool operator >(Vector2 b, Rectangle a)
 		{
 			Vector2 c = b - a.sc_topLeft;
-			return c.X >= 0 && c.X < a.sc_size.X
-				&& c.Y >= 0 && c.Y < a.sc_size.Y;
+			return c.X >= 0 && c.X <= a.sc_size.X
+				&& c.Y >= 0 && c.Y <= a.sc_size.Y;
 		}
 		public static Rectangle operator +(Rectangle a, Vector2 b)
 		{

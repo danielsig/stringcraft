@@ -62,6 +62,9 @@ namespace StringCraft
 			_node = null;
 		}
 		
+		
+		//TODO: FIX THIS!!!
+		/*
 		public static Renderer operator >>(Renderer ren, int shift)
 		{
 			ren.CheckAccess();
@@ -121,6 +124,7 @@ namespace StringCraft
 			right._node.Value = right;
 			return left;
 		}
+		*/
 		internal static void RenderAll()
 		{
 			foreach(Camera cam in Camera.Cameras)

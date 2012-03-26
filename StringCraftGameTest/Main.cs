@@ -8,7 +8,7 @@ namespace StringCraftGameTest
 		[STAThread]
 		public static int Main(string[] args)
 		{
-			Engine.Init<GameCore>(50, -1, -1, ConsoleColor.Black);
+			Engine.Init<GameCore>(30, 100, 50, ConsoleColor.Black);
 			return 0;
 		}
 	}
