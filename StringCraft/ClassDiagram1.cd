@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
   <Class Name="StringCraft.Rigidbody">
-    <Position X="3.75" Y="6.5" Width="1.5" />
+    <Position X="1" Y="8.75" Width="1.5" />
     <Compartments>
       <Compartment Name="Private" Collapsed="true" />
     </Compartments>
@@ -11,7 +11,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="StringCraft.Camera">
-    <Position X="5.75" Y="6.5" Width="1.5" />
+    <Position X="4.25" Y="6.5" Width="2.75" />
     <Compartments>
       <Compartment Name="Internal" Collapsed="true" />
       <Compartment Name="Private" Collapsed="true" />
@@ -22,7 +22,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="StringCraft.Debug" Collapsed="true">
-    <Position X="9.75" Y="6.5" Width="1.5" />
+    <Position X="7.25" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQEAAAgBAAAAAAIAAAAAAAAAAgAAgAAAAAAAAAAAEA=</HashCode>
       <FileName>Comp\Text\Debug.cs</FileName>
@@ -30,7 +30,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="StringCraft.Renderer">
-    <Position X="7.75" Y="6.5" Width="1.75" />
+    <Position X="7.25" Y="6.5" Width="1.75" />
     <Compartments>
       <Compartment Name="Internal" Collapsed="true" />
       <Compartment Name="Private" Collapsed="true" />
@@ -41,7 +41,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="StringCraft.Input">
-    <Position X="22.75" Y="0.75" Width="2.5" />
+    <Position X="22.75" Y="0.75" Width="2.75" />
     <Compartments>
       <Compartment Name="Internal" Collapsed="true" />
       <Compartment Name="Private" Collapsed="true" />
@@ -59,7 +59,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="StringCraft.Component">
-    <Position X="6.25" Y="1.75" Width="2.75" />
+    <Position X="4" Y="1.75" Width="2.75" />
     <Compartments>
       <Compartment Name="Internal" Collapsed="true" />
     </Compartments>
@@ -91,14 +91,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="StringCraft.StringCraftObject" Collapsed="true">
-    <Position X="5" Y="0.5" Width="1.5" />
+    <Position X="3" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Core\StringCraftObject.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="StringCraft.Engine">
-    <Position X="9.5" Y="0.75" Width="2" />
+    <Position X="9.25" Y="1.75" Width="2" />
     <Compartments>
       <Compartment Name="Internal" Collapsed="true" />
       <Compartment Name="Private" Collapsed="true" />
@@ -151,7 +151,7 @@
     </TypeIdentifier>
   </Struct>
   <Interface Name="StringCraft.ISingletonComponent" Collapsed="true">
-    <Position X="9.75" Y="3.25" Width="1.5" />
+    <Position X="7" Y="3" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Core\ISingletonComponent.cs</FileName>
@@ -165,14 +165,14 @@
     </TypeIdentifier>
   </Enum>
   <Enum Name="StringCraft.DestructionResponse">
-    <Position X="4.5" Y="1.75" Width="1.5" />
+    <Position X="7" Y="1.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAQAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Core\Component.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="StringCraft.Anchor">
-    <Position X="9.75" Y="7.5" Width="1.5" />
+    <Position X="9.25" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AgAAAAAIAAAAABAAAAAQAAAAAAAIAAAACACAAAAIAEA=</HashCode>
       <FileName>Core\DataTypes\Rectangle.cs</FileName>
