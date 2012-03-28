@@ -69,6 +69,12 @@
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup />
   <ItemGroup>
+    <None Include="ClassDiagram01.cd" />
     <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram02.cd" />
+    <None Include="ClassDiagram03.cd" />
+    <None Include="ClassDiagram04.cd" />
+    <None Include="ClassDiagram05.cd" />
+    <None Include="ClassDiagram06.cd" />
   </ItemGroup>
 </Project>
