@@ -14,22 +14,24 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FC06924A-9726-41DF-95BF-3FCCDF366C5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC06924A-9726-41DF-95BF-3FCCDF366C5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC06924A-9726-41DF-95BF-3FCCDF366C5E}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC06924A-9726-41DF-95BF-3FCCDF366C5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC06924A-9726-41DF-95BF-3FCCDF366C5E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{486E590B-21AE-477F-800F-16CD0B2373AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{486E590B-21AE-477F-800F-16CD0B2373AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{486E590B-21AE-477F-800F-16CD0B2373AE}.Default|Any CPU.ActiveCfg = Debug|Any CPU
 		{486E590B-21AE-477F-800F-16CD0B2373AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{486E590B-21AE-477F-800F-16CD0B2373AE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9DCCC85A-0244-4B21-ABAC-46E3711A5EEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9DCCC85A-0244-4B21-ABAC-46E3711A5EEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DCCC85A-0244-4B21-ABAC-46E3711A5EEF}.Default|Any CPU.ActiveCfg = Debug|Any CPU
 		{9DCCC85A-0244-4B21-ABAC-46E3711A5EEF}.Default|Any CPU.Build.0 = Debug|Any CPU
 		{9DCCC85A-0244-4B21-ABAC-46E3711A5EEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DCCC85A-0244-4B21-ABAC-46E3711A5EEF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FC06924A-9726-41DF-95BF-3FCCDF366C5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC06924A-9726-41DF-95BF-3FCCDF366C5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FC06924A-9726-41DF-95BF-3FCCDF366C5E}.Default|Any CPU.ActiveCfg = Debug|Any CPU
-		{FC06924A-9726-41DF-95BF-3FCCDF366C5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FC06924A-9726-41DF-95BF-3FCCDF366C5E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItems = $0
@@ -63,8 +65,5 @@ Global
 		$9.LineAlign = 0
 		$8.inheritsSet = Mono
 		version = 0.7
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

@@ -68,6 +68,19 @@ namespace StringCraft
 			return Gameobject.RemoveComponent<thisType>();
 		}*/
 		
+		public CompType GetComponent<CompType>() where CompType : Component
+		{
+			return Gameobject.GetComponent<CompType>();
+		}
+		public CompType AddComponent<CompType>() where CompType : Component
+		{
+			return Gameobject.AddComponent<CompType>();
+		}
+		public DestructionResponse RemoveComponent<CompType>() where CompType : Component
+		{
+			return Gameobject.RemoveComponent<CompType>();
+		}
+		
 		internal void CallAwake()
 		{
 			this.Call("Awake");

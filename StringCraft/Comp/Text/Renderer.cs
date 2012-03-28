@@ -51,67 +51,80 @@ namespace StringCraft
 		private Symbol _symbol = Symbol.EMPTY;
 		
 		private LinkedListNode<Renderer> _node = null;
-				
-		public void Awake()
+
+        private void Awake()
 		{
 			_node = sc_displayList.AddLast(this);
 		}
-		public void OnDestroy()
+		private void OnDestroy()
 		{
 			sc_displayList.Remove(_node);
 			_node = null;
 		}
 		
 		
-		//TODO: FIX THIS!!!
-		/*
-		public static Renderer operator >>(Renderer ren, int shift)
+		public void ChangeZOrder(int amount)
 		{
-			ren.CheckAccess();
+			CheckAccess();
 			
-			LinkedListNode<Renderer> target = ren._node;
-			for(int i = 0; i < shift; i++)
-			{
-				if(target.Next != null) target = target.Next;
-				else break;
-			}
-			sc_displayList.Remove(ren._node);
-			sc_displayList.AddAfter(target, ren._node);
-			return ren;
+			LinkedListNode<Renderer> target = _node;
+            
+            if(amount > 0)
+            {
+			    for(int i = 0; i < amount; i++)
+			    {
+				    if(target.Next != null) target = target.Next;
+				    else break;
+			    }
+			    sc_displayList.Remove(_node);
+			    sc_displayList.AddAfter(target, _node);
+            }
+            else
+            {
+                for(int i = 0; i < amount; i++)
+			    {
+				    if(target.Previous != null) target = target.Previous;
+				    else break;
+			    }
+			    sc_displayList.Remove(_node);
+			    sc_displayList.AddBefore(target, _node);
+            }
 		}
-		public static Renderer operator <<(Renderer ren, int shift)
+		public void MoveBehind(Renderer target)
 		{
-			ren.CheckAccess();
-			
-			LinkedListNode<Renderer> target = ren._node;
-			for(int i = 0; i < shift; i++)
-			{
-				if(target.Previous != null) target = target.Previous;
-				else break;
-			}
-			sc_displayList.Remove(ren._node);
-			sc_displayList.AddBefore(target, ren._node);
-			return ren;
-		}
-		public static Renderer operator <(Renderer target, Renderer ren)
-		{
-			ren.CheckAccess();
+            CheckAccess();
 			target.CheckAccess();
 			
-			sc_displayList.Remove(ren._node);
-			sc_displayList.AddAfter(target._node, ren._node);
-			return ren;
+			sc_displayList.Remove(_node);
+            sc_displayList.AddAfter(target._node, _node);
 		}
-		public static Renderer operator >(Renderer ren, Renderer target)
+		public void MoveInFrontOf(Renderer target)
 		{
-			ren.CheckAccess();
+			CheckAccess();
 			target.CheckAccess();
 			
-			sc_displayList.Remove(ren._node);
-			sc_displayList.AddBefore(target._node, ren._node);
-			return ren;
+			sc_displayList.Remove(_node);
+			sc_displayList.AddBefore(target._node, _node);
 		}
-		public static Renderer operator ^(Renderer left, Renderer right)
+        public void SendToBack()
+        {
+            CheckAccess();
+
+            sc_displayList.Remove(_node);
+            sc_displayList.AddFirst(_node);
+        }
+        public void SendToFront()
+        {
+            CheckAccess();
+
+            sc_displayList.Remove(_node);
+            sc_displayList.AddLast(_node);
+        }
+        public void SwapWith(Renderer other)
+        {
+            Swap(this, other);
+        }
+		public static void Swap(Renderer left, Renderer right)
 		{
 			left.CheckAccess();
 			right.CheckAccess();
@@ -122,9 +135,8 @@ namespace StringCraft
 			
 			left._node.Value = left;
 			right._node.Value = right;
-			return left;
 		}
-		*/
+		
 		internal static void RenderAll()
 		{
 			foreach(Camera cam in Camera.Cameras)
