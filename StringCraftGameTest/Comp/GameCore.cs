@@ -126,8 +126,10 @@ namespace StringCraftGameTest
 			test.Position = new Vector2(60, 25);
 			
 			string ballName = "Ball";
+
+			string[] ballNames = "RedBall GreenBall BlueBall".Split(' ');
 			
-			for(int i = 0; i < 80; i++)
+			for(int i = 0; i < 10; i++)
 			{
 				GameObject ball = new GameObject("Ball" + i);
 				Renderer renderer = ball.AddComponent<Renderer>();
@@ -142,9 +144,7 @@ namespace StringCraftGameTest
 				
 				bouncer.Amount = 0.2;
 				
-				if(i % 40 == 10) ballName = "RedBall";
-				if(i % 40 == 20) ballName = "GreenBall";
-				if(i % 40 == 30) ballName = "BlueBall";
+				ballName = ballNames[i % ballNames.Length];
 			}
 		}
 		
